@@ -1,14 +1,14 @@
 # Cocoapods Pod Merge Plugin
 
-Pod-merge is a Cocoapods plugin to **merge** dependencies (or pods) used by your Xcode project, so as to reduce the number of dynamic frameworks your app has to load on app startup.
+pod-merge is a Cocoapods plugin to **merge** dependencies (or pods) used by your Xcode project, to reduce the number of dynamic frameworks your app has to load on app startup.
 
-The plugin introduces a new file to your project: the `MergeFile`, and hooks into the pre-install phase of `pod install` to merge your dependencies based on your `MergeFile`
+The plugin introduces a new file to your project: the **MergeFile**, and hooks into the pre-install phase of `pod install` to merge your dependencies.
 
 ## Installation
 
 #### Using Bundler 
 
-If your Xcode project does not have a `Gemfile` yet, [learn how to set it up here](https://www.mokacoding.com/blog/ruby-for-ios-developers-bundler/). It's highly recommended you use [**bundler**](https://bundler.io/) to maintain consistent versions of tools like `cocoapods` etc within your team. 
+If your Xcode project does not have a `Gemfile` yet, it's highly recommended you use [**bundler**](https://bundler.io/) to maintain consistent versions of tools like cocoapods within your team.  [Learn how to set it up here](https://www.mokacoding.com/blog/ruby-for-ios-developers-bundler/).
 
 To use cocoapods-pod-merge, add this line to your app's `Gemfile`:
 
@@ -24,17 +24,67 @@ Note than **this is a cocoapods plugin**, hence it requires cocoapods as a depen
 
 ## Usage
 
-To get started,  add this line to the top of your existing `Podfile`:
+Using this plugin to merge your pods is a simple three step process:
 
+#### 1. Create a MergeFile
+
+This plugin requires a file called **MergeFile**. This is how it looks:
+
+```ruby
+group 'Networking'
+	pod 'AFNetworking'
+	pod 'SDWebImage'
+end
 ```
+
+The above MergeFile:
+
+* Defines a group named `UIPods`. This will be the name of the resulting merged pod.
+* Tells the plugin to merge `MBProgressHUD` & `SDWebImage` into `UIPods`
+
+#### 2. Update your Podfile
+
+Now, update your Podfile to use the plugin, as well as the merged pods:
+
+Add the line **plugin 'cocoapods-pod-merge'** to the top of your existing `Podfile`, and modify it to use the merged pod.
+
+```ruby
 plugin `cocoapods-pod-merge`
+
+target 'MyApp'
+	# pod 'AFNetworking' # Not needed anymore, since we'll use the merged Pod
+	# pod 'SDWebImage' # Not needed anymore, since we'll use the merged Pod
+	pod 'Networking', :path => 'MergedPods/Networking' # The merged pod
+end
 ```
 
-Then run
+Things to note:
+
+* We commented out the pods 'AFNetworking' & 'SDWebImage' above, since these will now be installed as part of the merged `Networking` framework.
+* We add the merged framework `Networking`, which is named as the group name defined in our MergeFile
+* The path is fixed, since the plugin will put your merged pods in the `MergedPods/<group name>` directory.
+
+#### 3. Run Pod Install & Update your Code!
+
+That's it! Just run:
 
     $ bundle exec pod install
 
-Just like Cocoapods requires a `Podfile` in your project directory, this plugin requires a file called `MergeFile`. After you follow the steps above, the plugin will automatically create a `MergeFile` for you on your first `pod install`.
+If all goes well, the pods should be merged according to your MergeFile, and should be available to use in your project. 
+
+But hang on, there's one more thing! There's no framework such as `AFNetworking` or `SDWebImage` available to your project now, since these are now merged into a pod named`Networking` So, as a one time process, replace imports of the merged libraries in your project like
+
+```swift
+import MBProgressHUD
+```
+
+to 
+
+```swift
+import UIPods.MBProgressHUD
+```
+
+And that's it! You're done!
 
 ## MergeFile
 
