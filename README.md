@@ -88,41 +88,7 @@ And that's it! You're done!
 
 ## MergeFile
 
-The `MergeFile` has a very similar syntax to your `Podfile`. Consider a typical `Podfile`: 
-
-```ruby
-target 'MyApp'
-	pod 'AFNetworking'
-	pod 'MBProgressHUD'
-	pod 'SDWebImage'
-end
-```
-
-Now, if want to merge the  `MBProgressHUD` & `SDWebImage` pods from the above `Podfile`, just define a `group` in your `MergeFile`:
-
-```ruby
-group 'UIPods'
-	pod 'MBProgressHUD'
-	pod 'SDWebImage'
-end
-```
-
-And that's it! The next time you run `pod install`, the dependencies will automatically be merged into a single pod named `UIPods`, and will be stored in the `MergedPods` directory in your project folder. 
-
-You can then modify your Podfile to use the newly created merged pod: `UIPods`
-
-```ruby
-target 'MyApp'
-	pod 'AFNetworking'
-	pod 'UIPods', :path => 'MergedPods/UIPods'
-end
-```
-
-> Note: Once the pods are merged according to your `MergeFile`, you **should commit** the `MergeFile` & the `MergePods` folder in your version control system (eg: git), so that the merge process does not occur everytime someone in your team runs `pod install`. **The plugin caches your merged dependencies unless the `MergeFile` is modified**.
-
-## A More Complex MergeFile
-
-Just like your `Podfile`, the `MergeFile` supports all types of Pods you can define in your `Podfile`. Also, you can have **multiple** merged pods, by defining multiple groups in your `MergeFile`.
+The `MergeFile` has a very similar syntax to your `Podfile`. It also supports defining **multiple** groups, which creates **multiple** merged pods.
 
 Consider a more common **Podfile**, with lots of pods, fixed versions, and different sources:
 
@@ -137,7 +103,7 @@ target 'MyApp'
 end
 ```
 
-Let's group these Pods into two: `UI`, and `Networking`. The `MergeFile` to achieve this would look like this:
+Let's group these Pods into two: `UI`, and `Networking`. The MergeFile to achieve this would look like this:
 
 ```ruby
 group 'Networking'
@@ -155,10 +121,10 @@ end
 
 Two things to note here:
 
-* The `MergeFile` supports defining Pods just like your `Podfile`, with all the options that the `Podfile` supports.
-* You can any number of groups in your `MergeFile`. The resulting merged dependencies will be named by the groups defined in your `MergeFile`.
+* The `MergeFile` supports defining Pods just like your `Podfile`, with all the options that the `Podfile` supports, like the `:path, :git, :branch` arguments.
+* You can have any number of groups in your `MergeFile`. The resulting merged dependencies will be named by the groups defined in your `MergeFile`.
 
-You can now modify your original `Podfile` to use the merged dependencies: 
+You can now modify your original `Podfile` to use the merged pods instead of the individual pods: 
 
 ```ruby
 target 'MyApp'
@@ -168,6 +134,8 @@ end
 ```
 
 That's it! Now just run `bundle exec pod install`!
+
+> Note: Once the pods are merged according to your `MergeFile`, you **should commit** the `MergeFile` & the `MergePods` folder in your version control system (eg: git), so that the merge process does not occur everytime someone in your team runs `pod install`. **The plugin caches your merged dependencies unless the `MergeFile` is modified**.
 
 ## Troubleshooting
 
