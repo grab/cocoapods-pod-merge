@@ -121,8 +121,8 @@ end
 
 Two things to note here:
 
-* The `MergeFile` supports defining Pods just like your `Podfile`, with all the options that the `Podfile` supports, like the `:path, :git, :branch` arguments.
-* You can have any number of groups in your `MergeFile`. The resulting merged dependencies will be named by the groups defined in your `MergeFile`.
+* The MergeFile supports defining Pods just like your Podfile, with all the options that the Podfile supports, like the `:path, :git, :branch` arguments.
+* You can have any number of groups in your MergeFile. The resulting merged dependencies will be named by the groups defined in your MergeFile.
 
 You can now modify your original `Podfile` to use the merged pods instead of the individual pods: 
 
