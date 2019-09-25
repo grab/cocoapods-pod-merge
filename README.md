@@ -39,8 +39,8 @@ end
 
 The above MergeFile:
 
-* Defines a group named `UIPods`. This will be the name of the resulting merged pod.
-* Tells the plugin to merge `MBProgressHUD` & `SDWebImage` into `UIPods`
+* Defines a group named `Networking`. This will be the name of the resulting merged pod.
+* Tells the plugin to merge `AFNetworking` & `SDWebImage` into `Networking`
 
 #### 2. Update your Podfile
 
@@ -75,13 +75,13 @@ If all goes well, the pods should be merged according to your MergeFile, and sho
 But hang on, there's one more thing! There's no framework such as `AFNetworking` or `SDWebImage` available to your project now, since these are now merged into a pod named`Networking` So, as a one time process, replace imports of the merged libraries in your project like
 
 ```swift
-import MBProgressHUD
+import AFNetworking
 ```
 
 to 
 
 ```swift
-import UIPods.MBProgressHUD
+import Networking.AFNetworking
 ```
 
 And that's it! You're done!
@@ -129,7 +129,7 @@ You can now modify your original `Podfile` to use the merged pods instead of the
 ```ruby
 target 'MyApp'
 	pod 'Networking', :path => 'MergedPods/Networking'
-	pod 'UIPods', :path => 'MergedPods/UIPods'
+	pod 'UI', :path => 'MergedPods/UI'
 end
 ```
 
