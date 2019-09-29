@@ -1,0 +1,9 @@
+# Mac
+.DS_Store
+
+# Cocoapods
+Pods/
+
+# pod-merge
+MergeCache/
+MergedPods/

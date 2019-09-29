@@ -1,0 +1,11 @@
+group 'Networking'
+	pod 'AFNetworking', '2.7.0'
+	pod 'SDWebImage', '~> 5.0'
+end
+
+group 'UI'
+	pod 'IQKeyboardManager', '6.2.1'
+	pod 'TTTAttributedLabel', '2.0.0'
+	pod 'MBProgressHUD', :git => 'https://github.com/jdg/MBProgressHUD.git', :tag => '1.1.0'
+	pod 'FLAnimatedImage', '1.0.12'
+end

@@ -1,0 +1,13 @@
+platform :ios, '11.0'
+
+plugin 'cocoapods-pod-merge'
+
+target 'PodMergeExample' do
+  use_frameworks!
+
+  pod 'Moya' # Unmerged pods are unaffected
+
+  # Merged Pods:
+  pod 'Networking', :path => 'MergedPods/Networking'
+  pod 'UI', :path => 'MergedPods/UI'
+end

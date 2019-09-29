@@ -1,0 +1,38 @@
+PODS:
+  - Alamofire (4.9.0)
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - Networking (1.0.0)
+  - Result (4.1.0)
+  - UI (1.0.0)
+
+DEPENDENCIES:
+  - Moya
+  - Networking (from `MergedPods/Networking`)
+  - UI (from `MergedPods/UI`)
+
+SPEC REPOS:
+  https://cdn.cocoapods.org/:
+    - Alamofire
+    - Moya
+    - Result
+
+EXTERNAL SOURCES:
+  Networking:
+    :path: MergedPods/Networking
+  UI:
+    :path: MergedPods/UI
+
+SPEC CHECKSUMS:
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  Networking: f48f9d19385b0b8c6b2b7ec60f2c1aefb6ad8d68
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  UI: 28b79936b7a87484d9115f004022c2f6f9673394
+
+PODFILE CHECKSUM: 1cfcd3a4ee293d99f77b555865eff81f09ae1717
+
+COCOAPODS: 1.8.1

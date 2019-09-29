@@ -49,7 +49,7 @@ Now, update your Podfile to use the plugin, as well as the merged pods:
 Add the line **plugin 'cocoapods-pod-merge'** to the top of your existing `Podfile`, and modify it to use the merged pod.
 
 ```ruby
-plugin `cocoapods-pod-merge`
+plugin 'cocoapods-pod-merge'
 
 target 'MyApp'
 	# pod 'AFNetworking' # Not needed anymore, since we'll use the merged Pod
@@ -124,9 +124,11 @@ Two things to note here:
 * The MergeFile supports defining Pods just like your Podfile, with all the options that the Podfile supports, like the `:path, :git, :branch` arguments.
 * You can have any number of groups in your MergeFile. The resulting merged dependencies will be named by the groups defined in your MergeFile.
 
-You can now modify your original `Podfile` to use the merged pods instead of the individual pods: 
+You can now modify your original `Podfile` to use the plugin, and the merged pods instead of the individual pods: 
 
 ```ruby
+plugin 'cocoapods-pod-merge'
+
 target 'MyApp'
 	pod 'Networking', :path => 'MergedPods/Networking'
 	pod 'UI', :path => 'MergedPods/UI'
