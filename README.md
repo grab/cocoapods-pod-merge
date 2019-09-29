@@ -86,6 +86,23 @@ import Networking.AFNetworking
 
 And that's it! You're done!
 
+## Example Project
+
+There's a example project in the repo which shows the plugin in action. To try it out, just open the Terminal in the `PodMergeExample` directory, and run:
+
+```bash
+$ bundle install
+$ bundle exec pod install
+```
+
+
+
+## Benchmarks & More Info
+
+To learn more about the performance improvements you can expect, checkout [benchmarks](https://gitlab.myteksi.net/siddharth.gupta/cocoapods-pod-merge/blob/master/wiki/benchmarks.md).
+
+Curious about how the plugin actually work, check out [inner workings](https://gitlab.myteksi.net/siddharth.gupta/cocoapods-pod-merge/blob/master/wiki/inner_workings.md).
+
 ## MergeFile
 
 The `MergeFile` has a very similar syntax to your `Podfile`. It also supports defining **multiple** groups, which creates **multiple** merged pods.
