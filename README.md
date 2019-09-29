@@ -72,7 +72,7 @@ That's it! Just run:
 
 If all goes well, the pods should be merged according to your MergeFile, and should be available to use in your project. 
 
-But hang on, there's one more thing! There's no framework such as `AFNetworking` or `SDWebImage` available to your project now, since these are now merged into a pod named`Networking` So, as a one time process, replace imports of the merged libraries in your project like
+There's _one more thing_! There's no framework such as `AFNetworking` or `SDWebImage` available to your project now, since these are now merged into a pod named`Networking` So, as a one time process, replace imports of the merged libraries in your project like
 
 ```swift
 import AFNetworking
@@ -135,17 +135,55 @@ end
 
 That's it! Now just run `bundle exec pod install`!
 
-> Note: Once the pods are merged according to your `MergeFile`, you **should commit** the `MergeFile` & the `MergePods` folder in your version control system (eg: git), so that the merge process does not occur everytime someone in your team runs `pod install`. **The plugin caches your merged dependencies unless the `MergeFile` is modified**.
+> Note: Once the pods are merged according to your `MergeFile`, you **should commit** the `MergeFile` into your version control system (like git)
 
-## Troubleshooting
+### Special Flags
 
-If you're getting compilation or linking issues while using the merged pods, here are some general guidelines to troubleshoot:
+#### has_dependencies!
+
+If you have a group of Pods that depend on each other, and you want merge them, add this flag into that group.
+
+```ruby
+group 'SomePods'
+	has_dependencies!
+	pod 'ABC'
+	pod 'ABCDependsOnThis'
+end
+```
+
+This enables an experimental feature of the plugin, where it tries fix dependency imports. For example, If pod `ABC` has code like  `import <ABCDependsOnThis/File.h>`, the plugin will automatically convert this import into`#import <File.h>`, since after the merge, the both the pods will be in the same framework.
+
+## Version Control (like git)
+
+You should definitely commit the `MergeFile`  into your repository, since this is just like your Podfile, and is required for the plugin to work. The plugin creates a directory called `MergedPods`, where it keeps the source code and podspecs for the merged pods.
+
+Whether you decide you commit this directory depends entirely on your team's workflow. A good rule of thumb is if you commit the `Pods/` directory created by Cocoapods, then you should commit this directory as well. The obvious upside is that the merged pods are cached, and the merge does not take place everytime `pod install` is run, unless something changes.
+
+The plugin also creates another directory called `MergeCache` when it's running. While this directory is removed when the plugin is done, it can be good practice to add to your .gitignore file just in case the plugin fails to remove it.
+
+```bash
+MergeCache/
+```
+
+If you decide not to commit the MergedPods directory, add that to the .gitignore as well:
+
+```bash
+MergeCache/
+MergedPods/
+```
+
+## Tips
+
+This plugin is not a magic bullet that'll merge all your cocoa pods into a single framework. Here's a few tips to save you from hard to debug issues after merging your pods.
 
 * Start small, by merging a small number (2 to 4) of your Pods, and check everything works after the merge.
 * Try to make logical sense of your groups, don't just merge every single Pod your app uses into one giant pod. This can be very fragile, and can lead to hard to debug compilation / linking issues.
-* Refrain from merging super complex or specialized pods (like pods written in C/C++). Such pods can have special build settings and compiler flags that can break the other pods that are merged with them.
+* Refrain from merging complex or specialized pods (like pods written in C/C++). Such pods can have special build settings and compiler flags that can break the other pods that are merged with them.
 
-If the above guidelines still do not solve your problem, please [report it](https://github.com/grab/cocoapods-pod-merge/issues)! Merging Pods is a complex process, and the plugin might not have covered all possible cases or podspec formats. Any feedback or feature suggesions are also encouraged. Bug reports and pull requests are welcome. 
+
+## Troubleshooting
+
+If the above guidelines still do not solve your problem, please [report it](https://github.com/grab/cocoapods-pod-merge/issues)! Merging Pods is a complex process, and the plugin does not cover all possible use cases or podspec formats. Any feedback or feature suggesions are also encouraged. Bug reports and pull requests are welcome. 
 
 ## License
 
