@@ -141,7 +141,7 @@ That's it! Now just run `bundle exec pod install`!
 
 #### has_dependencies!
 
-If you have a group of Pods that depend on each other, and you want merge them, add this flag into that group.
+If you have a group of Pods that depend on each other and you want merge them, add this flag into that group.
 
 ```ruby
 group 'SomePods'
@@ -151,21 +151,21 @@ group 'SomePods'
 end
 ```
 
-This enables an experimental feature of the plugin, where it tries fix dependency imports. For example, If pod `ABC` has code like  `import <ABCDependsOnThis/File.h>`, the plugin will automatically convert this import into`#import <File.h>`, since after the merge, the both the pods will be in the same framework.
+This enables an experimental feature where the plugin tries to fix dependency imports. For example, If pod `ABC` has code like  `import <ABCDependsOnThis/File.h>`, the plugin will automatically convert this import into `#import "File.h"`, since after the merge, the both the pods will be in the same framework.
 
 ## Version Control (like git)
 
-You should definitely commit the `MergeFile`  into your repository, since this is just like your Podfile, and is required for the plugin to work. The plugin creates a directory called `MergedPods`, where it keeps the source code and podspecs for the merged pods.
+You should definitely commit the `MergeFile`  into your repository, since this is just like your Podfile, and is required for the plugin to work. 
 
-Whether you decide you commit this directory depends entirely on your team's workflow. A good rule of thumb is if you commit the `Pods/` directory created by Cocoapods, then you should commit this directory as well. The obvious upside is that the merged pods are cached, and the merge does not take place everytime `pod install` is run, unless something changes.
+The plugin creates a directory called `MergedPods`, where it keeps the source code and podspecs for the merged pods. Whether you decide you commit this directory depends entirely on your team's workflow. A good rule of thumb is if you commit the `Pods/` directory created by Cocoapods, then you should commit this directory as well. The obvious upside is that the merged pods are cached, and the merge does not take place everytime `pod install` is run, unless something changes.
 
-The plugin also creates another directory called `MergeCache` when it's running. While this directory is removed when the plugin is done, it can be good practice to add to your .gitignore file just in case the plugin fails to remove it.
+The plugin also creates another directory called `MergeCache` when it's running. While this directory is removed when the plugin is done, it can be good practice to add to your `.gitignore` file just in case the plugin fails to remove it.
 
 ```bash
 MergeCache/
 ```
 
-If you decide not to commit the MergedPods directory, add that to the .gitignore as well:
+If you decide not to commit the MergedPods directory, add that to the `.gitignore` as well:
 
 ```bash
 MergeCache/
@@ -174,7 +174,7 @@ MergedPods/
 
 ## Tips
 
-This plugin is not a magic bullet that'll merge all your cocoa pods into a single framework. Here's a few tips to save you from hard to debug issues after merging your pods.
+This plugin is not a magic bullet that'll merge all your cocoapods into a single framework. Here's a few tips to save you from hard to debug issues after merging your pods.
 
 * Start small, by merging a small number (2 to 4) of your Pods, and check everything works after the merge.
 * Try to make logical sense of your groups, don't just merge every single Pod your app uses into one giant pod. This can be very fragile, and can lead to hard to debug compilation / linking issues.
