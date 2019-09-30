@@ -43,9 +43,13 @@ module CocoapodsPodMerge
         return
       end
 
-      # Delete existing merged frameworks
+      # Delete existing merged frameworks & cache
       if File.directory?(InstallationDirectory)
         FileUtils.rm_rf(InstallationDirectory)
+      end
+
+      if File.directory?(CacheDirectory)
+        FileUtils.rm_rf(CacheDirectory)
       end
 
       unless File.directory?(InstallationDirectory)
