@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2019 Grabtaxi Holdings PTE LTE (GRAB), All rights reserved.
 # Use of this source code is governed by an MIT-style license that can be found in the LICENSE file
 
@@ -6,9 +8,9 @@ require 'fileutils'
 require 'json'
 require 'digest/md5'
 
-CacheDirectory = 'MergeCache'.freeze
-InstallationDirectory = 'MergedPods'.freeze
-MergeFileName = 'MergeFile'.freeze
+CacheDirectory = 'MergeCache'
+InstallationDirectory = 'MergedPods'
+MergeFileName = 'MergeFile'
 MergeFileSample = %(
   group 'NetworkingPods' do
     pod 'AFNetworking'
@@ -19,7 +21,7 @@ MergeFileSample = %(
     pod 'SDWebImage'
     pod 'FLAnimatedImage'
   end
-).freeze
+)
 PodSpecWriter_Hook = %(
   post_install do |context|
     FileUtils.mkdir('Podspecs')
@@ -29,7 +31,7 @@ PodSpecWriter_Hook = %(
           podspec.close
     end
   end
-).freeze
+)
 
 module CocoapodsPodMerge
   class PodMerger
@@ -44,13 +46,8 @@ module CocoapodsPodMerge
       end
 
       # Delete existing merged frameworks & cache
-      if File.directory?(InstallationDirectory)
-        FileUtils.rm_rf(InstallationDirectory)
-      end
-
-      if File.directory?(CacheDirectory)
-        FileUtils.rm_rf(CacheDirectory)
-      end
+      FileUtils.rm_rf(InstallationDirectory) if File.directory?(InstallationDirectory)
+      FileUtils.rm_rf(CacheDirectory) if File.directory?(CacheDirectory)
 
       unless File.directory?(InstallationDirectory)
         FileUtils.mkdir(InstallationDirectory)
@@ -71,14 +68,10 @@ module CocoapodsPodMerge
 
       contents = File.read(gitignore_file)
       cache_folder = contents.scan(/#{CacheDirectory}/)
-      unless cache_folder && cache_folder.last
-        contents += "\n#{CacheDirectory}/"
-      end
+      contents += "\n#{CacheDirectory}/" unless cache_folder&.last
 
       merged_folder = contents.scan(/#{InstallationDirectory}/)
-      unless merged_folder && merged_folder.last
-        contents += "\n#{InstallationDirectory}/"
-      end
+      contents += "\n#{InstallationDirectory}/" unless merged_folder&.last
 
       File.open(gitignore_file, 'w') { |file| file.puts contents }
     end
@@ -232,7 +225,7 @@ module CocoapodsPodMerge
             if has_dependencies
               pods_to_merge.each do |pod|
                 modular_imports = contents.scan(%r{<#{pod}/(.+)>})
-                next unless modular_imports && modular_imports.last
+                next unless modular_imports&.last
 
                 Pod::UI.puts "\t\tExperimental: ".yellow + "Found Modular Imports in #{source_file}, fixing this by converting to local #import".magenta
                 contents_with_imports_fixed = contents.gsub(%r{<#{pod}/(.+)>}) do |match|
@@ -242,7 +235,7 @@ module CocoapodsPodMerge
               end
             else
               modular_imports = contents.scan(%r{<#{pod}/(.+)>})
-              next unless modular_imports && modular_imports.last
+              next unless modular_imports&.last
 
               Pod::UI.puts "\t\tExperimental: ".yellow + "Found Modular Imports in #{source_file}, fixing this by converting to local #import".magenta
               contents_with_imports_fixed = contents.gsub(%r{<#{pod}/(.+)>}) do |match|
@@ -326,10 +319,10 @@ module CocoapodsPodMerge
         resource_bundles = resource_bundles.merge(podspec['resource_bundle'])
       end
 
-      resource_bundles.each { |key, paths|
+      resource_bundles.each do |key, paths|
         paths = paths.map { |path| "Sources/#{pod}/#{path}" }
         resource_bundles[key] = paths
-      }
+      end
 
       subspecs = array_wrapped(podspec['default_subspec'])
       subspecs += array_wrapped(podspec['default_subspecs'])
@@ -381,7 +374,7 @@ module CocoapodsPodMerge
     ensure
       file.puts 'end'
       file.puts PodSpecWriter_Hook
-      file.close unless file.nil?
+      file&.close
     end
 
     def generate_module_map(merged_framework_name, public_headers)
