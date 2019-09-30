@@ -1,12 +1,12 @@
 //
-//  ContentView.swift
+//  ViewController.swift
 //  PodMergeExample
 //
-//  Created by Siddharth Gupta on 29/9/19.
+//  Created by Siddharth Gupta on 30/9/19.
 //  Copyright © 2019 Grab. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 
 // Import Merged Pods like this:
 import UI.FLAnimatedImage
@@ -25,16 +25,9 @@ import Moya
 // import MBProgressHUD
 // import AFNetworking
 
-struct ContentView: View {
-  var body: some View {
-    Text("Hello World")
-  }
-}
-
-struct ContentView_Previews: PreviewProvider {
+class ViewController: UIViewController {
 
   // Using stuff from the merged pods, just to check:
-
   let image = FLAnimatedImageView()
   let keyboard = IQKeyboardManager.shared()
   let hud = MBProgressHUD()
@@ -44,8 +37,5 @@ struct ContentView_Previews: PreviewProvider {
   let sdImage = SDWebImageManager()
 
   let moya: Task = .requestData(Data())
-
-  static var previews: some View {
-    ContentView()
-  }
 }
+
