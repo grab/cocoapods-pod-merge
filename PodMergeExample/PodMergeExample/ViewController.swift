@@ -17,8 +17,10 @@ import UI.TTTAttributedLabel
 import Networking.AFNetworking
 import Networking.SDWebImage
 
+// Merged Swift Pods cannot be import individually, only all or none.
+import MergedSwiftPods
+
 // Unmerged pods are unaffected
-import Alamofire
 import Moya
 
 // Cannot import individual pods anymore, uncomment to check:
@@ -35,6 +37,9 @@ class ViewController: UIViewController {
 
   let session = AFHTTPSessionManager()
   let sdImage = SDWebImageManager()
+
+  let error: AFError = .invalidURL(url: "")
+  let json: SwiftyJSONError = .elementTooDeep
 
   let moya: Task = .requestData(Data())
 }
