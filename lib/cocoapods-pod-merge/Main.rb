@@ -30,6 +30,15 @@ PodSpecWriter_Hook = %(
           podspec.puts(spec.attributes_hash.to_json)
           podspec.close
     end
+    context.aggregate_targets[0].target_definition.dependencies.each do |dependency|
+      if dependency.external?
+        if dependency.external_source.key?(:path)
+          path = dependency.external_source[:path]
+          Pod::UI.puts "Creating a copy of external source for merging: \#{dependency.name}".yellow
+          FileUtils.copy_entry path, "Pods/\#{dependency.name}"
+        end
+      end
+    end
   end
 )
 
