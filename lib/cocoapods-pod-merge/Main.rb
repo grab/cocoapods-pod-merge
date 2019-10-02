@@ -55,7 +55,9 @@ module CocoapodsPodMerge
       end
 
       # Delete existing merged frameworks & cache
-      FileUtils.rm_rf(InstallationDirectory) if File.directory?(InstallationDirectory)
+      if File.directory?(InstallationDirectory)
+        FileUtils.rm_rf(InstallationDirectory)
+      end
       FileUtils.rm_rf(CacheDirectory) if File.directory?(CacheDirectory)
 
       unless File.directory?(InstallationDirectory)
@@ -133,30 +135,31 @@ module CocoapodsPodMerge
         parsing_a_group = false
         group_name = ''
         f.each_line do |line|
-          unless line.strip.empty?
-            if parsing_a_group
-              if line.strip == 'end'
-                parsing_a_group = false
-              elsif line.strip.include?('!')
-                merge_groups[group_name]['flags'][line.strip.delete('!')] = true
-              else
-                merge_groups[group_name]['lines'].append(line)
-                line = line.split(',').first
-                title = line.scan(/\'(.+)\'/)
-                title ||= line.scan(/\"(.+)\"/)
-                merge_groups[group_name]['titles'].append(title.last.first.to_s.delete(',').delete("\''").delete('"'))
-              end
+          next if line.strip.empty?
+
+          line = line.gsub(/\#.+/, '') if line.include?('#') # Remove any comments
+          if parsing_a_group
+            if line.strip == 'end'
+              parsing_a_group = false
+            elsif line.strip.include?('!')
+              merge_groups[group_name]['flags'][line.strip.delete('!')] = true
             else
-              unless line.scan(/\'(.+)\'/).last.empty?
-                group_name = line.scan(/\'(.+)\'/).last.first.to_s
+              merge_groups[group_name]['lines'].append(line)
+              line = line.split(',').first
+              title = line.scan(/\'(.+)\'/)
+              title ||= line.scan(/\"(.+)\"/)
+              merge_groups[group_name]['titles'].append(title.last.first.to_s.delete(',').delete("\''").delete('"'))
+            end
+          else
+            unless line.scan(/\'(.+)\'/).last.empty?
+              group_name = line.scan(/\'(.+)\'/).last.first.to_s
 
-                if merge_groups[group_name]
-                  abort("Duplicate Group Name: #{group_name}. Please make sure all groups have different names!".red)
-                end
-
-                merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {} }
-                parsing_a_group = true
+              if merge_groups[group_name]
+                abort("Duplicate Group Name: #{group_name}. Please make sure all groups have different names!".red)
               end
+
+              merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {} }
+              parsing_a_group = true
             end
           end
         end
@@ -271,7 +274,7 @@ module CocoapodsPodMerge
           libraries += info.libraries
           prepare_command += info.prepare_command
           vendored_libraries += info.vendored_libraries
-          swift_versions[pod] = info.swift_versions.map { |version| version.to_f }
+          swift_versions[pod] = info.swift_versions.map(&:to_f)
           resource_bundles = resource_bundles.merge(info.resource_bundles)
         end
 
@@ -284,12 +287,16 @@ module CocoapodsPodMerge
 
       # Generate Module Map
       Pod::UI.puts "\tGenerating module map".magenta
-      generate_module_map(merged_framework_name, public_headers_by_pod) unless mixed_language_group
+      unless mixed_language_group
+        generate_module_map(merged_framework_name, public_headers_by_pod)
+      end
 
       # Verify there's a common Swift language version across the group
       if mixed_language_group
-        swift_version = swift_versions.each_value.reduce() { |final_swift_version, versions| final_swift_version & versions }
-        abort("Could not find a common compatible Swift version across the pods to be merged for group #{merged_framework_name}: #{swift_versions}".red) unless swift_version&.first
+        swift_version = swift_versions.each_value.reduce { |final_swift_version, versions| final_swift_version & versions }
+        unless swift_version&.first
+          abort("Could not find a common compatible Swift version across the pods to be merged for group #{merged_framework_name}: #{swift_versions}".red)
+        end
         Pod::UI.puts "\tUsing Swift Version #{swift_version.first} for the group: #{merged_framework_name}".magenta
       end
 
@@ -331,8 +338,10 @@ module CocoapodsPodMerge
       prepare_command += array_wrapped(podspec['prepare_command'])
       vendored_libraries += array_wrapped(podspec['vendored_library']).map { |path| "Sources/#{pod}/#{path}" }
       vendored_libraries += array_wrapped(podspec['vendored_libraries']).map { |path| "Sources/#{pod}/#{path}" }
-      swift_versions += array_wrapped(podspec['swift_version']) if mixed_language_group
-      swift_versions += array_wrapped(podspec['swift_versions']) if mixed_language_group
+      if mixed_language_group
+        swift_versions += array_wrapped(podspec['swift_version'])
+        swift_versions += array_wrapped(podspec['swift_versions'])
+      end
 
       if podspec['resource_bundles']
         resource_bundles = resource_bundles.merge(podspec['resource_bundles'])
