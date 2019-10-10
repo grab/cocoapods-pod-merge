@@ -99,9 +99,9 @@ $ bundle exec pod install
 
 ## Benchmarks & More Info
 
-To learn more about the performance improvements you can expect, checkout [benchmarks](https://gitlab.myteksi.net/siddharth.gupta/cocoapods-pod-merge/blob/master/wiki/benchmarks.md).
+To learn more about the performance improvements you can expect, checkout [benchmarks](https://github.com/grab/cocoapods-pod-merge/blob/master/wiki/benchmarks.md).
 
-Curious about how the plugin actually works? Check out [inner workings](https://gitlab.myteksi.net/siddharth.gupta/cocoapods-pod-merge/blob/master/wiki/inner_workings.md).
+Curious about how the plugin actually works? Check out [inner workings](https://github.com/grab/cocoapods-pod-merge/blob/master/wiki/inner_workings.md).
 
 ## MergeFile
 
