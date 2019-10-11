@@ -4,6 +4,14 @@ pod-merge is a Cocoapods plugin to **merge** dependencies (or pods) used by your
 
 The plugin introduces a new file to your project: the **MergeFile**, and hooks into the pre-install phase of `pod install` to merge your dependencies.
 
+## Benchmarks
+
+Based on measurements taken on this repo's example project, [merging 8 pods into 3](https://github.com/grab/cocoapods-pod-merge/blob/master/PodMergeExample/MergeFile).
+
+<img src="https://github.com/grab/cocoapods-pod-merge/raw/master/wiki/images/benchmarks_chart.png" alt="pod-merge Benchmarks" style="zoom:100%;" />
+
+According to our experience in Grab, improvements on older devices like the iPhone 5, 6 are more drastic. As a general rule, we've seen dylib loading times decrease by **upto 50 ms** per dynamic framework reduced on our user's slowest devices. More info [here](https://github.com/grab/cocoapods-pod-merge/blob/master/wiki/benchmarks.md).
+
 ## Installation
 
 #### Using Bundler 
