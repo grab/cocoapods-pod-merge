@@ -1,5 +1,7 @@
 # Pod-merge Benchmarks
 
+<img src="https://github.com/grab/cocoapods-pod-merge/raw/master/wiki/images/benchmarks_chart.png" alt="pod-merge Benchmarks" style="zoom:100%;" />
+
 ### On an iPhone 6 -  iOS 11.4.1, Low Power Mode (Cold Launches, with reboots)
 
 **Average dylib loading time**: 
