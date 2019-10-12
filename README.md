@@ -1,4 +1,4 @@
-# Cocoapods Pod Merge Plugin
+# Cocoapods Pod Merge Plugin [![Gem Version](https://badge.fury.io/rb/cocoapods-pod-merge.svg)](https://badge.fury.io/rb/cocoapods-pod-merge)
 
 pod-merge is a Cocoapods plugin to **merge** dependencies (or pods) used by your Xcode project, to reduce the number of dynamic frameworks your app has to load on app startup.
 
