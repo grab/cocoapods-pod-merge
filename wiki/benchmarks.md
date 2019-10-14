@@ -18,7 +18,7 @@
 
 **Improvement**: **~13%** (- 27 ms) 
 
-According to our experience in Grab, improvements on older devices like the iPhone 5, 5c, 6 are much more drastic. As a general rule, we've seen dylib loading times decrease by **upto 50 ms** per dynamic framework on our user's slowest devices.  The improvement is of-course higher on iOS versions older than iOS 13, which do not have the new shared dyld cache [dyld 3](https://developer.apple.com/videos/play/wwdc2017/413/).
+According to our experience in Grab, improvements on older devices like the iPhone 5, 5c, 6 are more drastic. As a general rule, we've seen dylib loading times decrease by **upto 50 ms** per dynamic framework reduced on our user's slowest devices.  The improvement is of-course higher on iOS versions older than iOS 13, which do not have the new shared dyld cache [dyld 3](https://developer.apple.com/videos/play/wwdc2017/413/).
 
 ## Raw Data
 
@@ -35,7 +35,6 @@ Total pre-main time: 4.7 seconds (100.0%)
            initializer time:  73.07 milliseconds (1.5%)
            slowest intializers :
              libSystem.B.dylib :  22.25 milliseconds (0.4%)
-
 
 Total pre-main time: 3.6 seconds (100.0%)
          dylib loading time: 3.4 seconds (94.2%)

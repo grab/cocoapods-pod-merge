@@ -50,6 +50,8 @@ The above MergeFile:
 * Defines a group named `Networking`. This will be the name of the resulting merged pod.
 * Tells the plugin to merge `AFNetworking` & `SDWebImage` into `Networking`
 
+**Here's a [few important tips](https://github.com/grab/cocoapods-pod-merge#tips) to decide what pods to merge.**
+
 #### 2. Update your Podfile
 
 Now, update your Podfile to use the plugin, as well as the merged pods:
@@ -203,9 +205,12 @@ MergedPods/
 
 This plugin is not a magic bullet that'll merge all your cocoapods into a single framework. Here's a few tips to save you from hard to debug issues after merging your pods.
 
-* Start small, by merging a small number (2 to 4) of your Pods, and check everything works after the merge.
-* Try to make logical sense of your groups, don't just merge every single Pod your app uses into one giant pod. This can be very fragile, and can lead to hard to debug compilation / linking issues.
-* Refrain from merging complex or specialized pods (like pods written in C/C++). Such pods can have special build settings and compiler flags that can break the other pods that are merged with them.
+* **Start small**, by merging a small number (2 to 4) of your Pods, and check everything works after the merge.
+* Only pods which expose their **full source code** can be merged. Pods that do not expose sources, eg: `Fabric` / `Firebase` cannot be merged.
+* **Don't mix up** Swift and Objective-C Pods in the same group.
+* **Try to make logical sense of your groups**, don't just merge every single Pod your app uses into one giant pod. This can be very fragile, and can lead to hard to debug compilation / linking issues.
+* **Refrain from merging complex or specialized pods** (like pods written in C/C++). Such pods can have special build settings and compiler flags that can break the other pods that are merged with them.
+* **Make sure** you add the required [flags](https://github.com/grab/cocoapods-pod-merge#special-flags) to relevant groups in your `MergeFile`.
 
 
 ## Troubleshooting
