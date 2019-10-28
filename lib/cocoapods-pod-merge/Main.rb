@@ -200,6 +200,11 @@ module CocoapodsPodMerge
       Pod::UI.puts 'Downloading Pods in the group'.cyan
       FileUtils.mkdir CacheDirectory unless File.directory?(CacheDirectory)
 
+      # Copy over the current Podfile.lock to maintain versions of pods with ranged versions
+      if File.file?('Podfile.lock')
+        FileUtils.cp('Podfile.lock', CacheDirectory)
+      end
+
       create_cache_podfile(podfile_info, group_contents['lines'])
 
       Dir.chdir(CacheDirectory) do
