@@ -352,7 +352,7 @@ module CocoapodsPodMerge
       end
 
       resource_bundles.each do |key, paths|
-        paths = paths.map { |path| "Sources/#{pod}/#{path}" }
+        paths = array_wrapped(paths).map { |path| "Sources/#{pod}/#{path}" }
         resource_bundles[key] = paths
       end
 
