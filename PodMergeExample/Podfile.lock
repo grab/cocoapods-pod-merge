@@ -1,26 +1,18 @@
 PODS:
-  - Alamofire (4.9.0)
   - MergedSwiftPods (1.0.0)
-  - Moya (13.0.1):
-    - Moya/Core (= 13.0.1)
-  - Moya/Core (13.0.1):
-    - Alamofire (~> 4.1)
-    - Result (~> 4.1)
   - Networking (1.0.0)
-  - Result (4.1.0)
+  - SnapKit (5.0.1)
   - UI (1.0.0)
 
 DEPENDENCIES:
   - MergedSwiftPods (from `MergedPods/MergedSwiftPods`)
-  - Moya
   - Networking (from `MergedPods/Networking`)
+  - SnapKit
   - UI (from `MergedPods/UI`)
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
-    - Alamofire
-    - Moya
-    - Result
+    - SnapKit
 
 EXTERNAL SOURCES:
   MergedSwiftPods:
@@ -31,13 +23,11 @@ EXTERNAL SOURCES:
     :path: MergedPods/UI
 
 SPEC CHECKSUMS:
-  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   MergedSwiftPods: 3eb331e4e97471520b4d82f76615095cc101fce3
-  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Networking: 844633d13d2328a829083b24ffaee99aea51c1de
-  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   UI: 2aa82721ee430cd2f0ab314904bbe1a281fa2ff9
 
-PODFILE CHECKSUM: c99f0371dd5beae99026b9810a6f7d431cee616b
+PODFILE CHECKSUM: 23e410ea04d160bdbb75d10ffd2b294046a2fa82
 
 COCOAPODS: 1.8.1

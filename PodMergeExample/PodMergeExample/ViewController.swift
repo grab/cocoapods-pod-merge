@@ -21,7 +21,7 @@ import Networking.SDWebImage
 import MergedSwiftPods
 
 // Unmerged pods are unaffected
-import Moya
+import SnapKit
 
 // Cannot import individual pods anymore, uncomment to check:
 // import MBProgressHUD
@@ -41,6 +41,12 @@ class ViewController: UIViewController {
   let error: AFError = .invalidURL(url: "")
   let json: SwiftyJSONError = .elementTooDeep
 
-  let moya: Task = .requestData(Data())
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // SnapKit Usage
+    let box = UIView()
+    box.snp.makeConstraints { _ in }
+  }
 }
 
