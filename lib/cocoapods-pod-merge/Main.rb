@@ -142,7 +142,15 @@ module CocoapodsPodMerge
             if line.strip == 'end'
               parsing_a_group = false
             elsif line.strip.include?('!')
-              merge_groups[group_name]['flags'][line.strip.delete('!')] = true
+              if line.strip.include?('swift_version!')
+                extracted_swift_version = line.strip.delete('swift_version!').delete('\'').delete('\"').strip.to_f
+                if extracted_swift_version == 0
+                  abort("Found an invalid Swift version specified for group \'#{group_name}\' in the MergeFile. Please specify one like: swift_version! '5.0'".red)
+                end
+                merge_groups[group_name]['swift_version'] = extracted_swift_version.to_s
+              else
+                merge_groups[group_name]['flags'][line.strip.delete('!')] = true
+              end
             else
               merge_groups[group_name]['lines'].append(line)
               line = line.split(',').first
@@ -158,7 +166,7 @@ module CocoapodsPodMerge
                 abort("Duplicate Group Name: #{group_name}. Please make sure all groups have different names!".red)
               end
 
-              merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {} }
+              merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {}, 'swift_version' => '' }
               parsing_a_group = true
             end
           end
@@ -172,6 +180,7 @@ module CocoapodsPodMerge
 
       pods_to_merge = group_contents['titles']
       flags = group_contents['flags']
+      forced_swift_language_version = group_contents['swift_version']
       public_headers_by_pod = {}
       frameworks = []
       prefix_header_contents = []
@@ -200,7 +209,7 @@ module CocoapodsPodMerge
       Pod::UI.puts 'Downloading Pods in the group'.cyan
       FileUtils.mkdir CacheDirectory unless File.directory?(CacheDirectory)
 
-      create_cache_podfile(podfile_info, group_contents['lines'])
+      create_cache_podfile(podfile_info, group_contents['lines'], forced_swift_language_version)
 
       Dir.chdir(CacheDirectory) do
         system('pod install') || raise('Failed to download pods to merge')
@@ -286,18 +295,23 @@ module CocoapodsPodMerge
       end
 
       # Generate Module Map
-      Pod::UI.puts "\tGenerating module map".magenta
       unless mixed_language_group
+        Pod::UI.puts "\tGenerating module map".magenta
         generate_module_map(merged_framework_name, public_headers_by_pod)
       end
 
       # Verify there's a common Swift language version across the group
       if mixed_language_group
-        swift_version = swift_versions.each_value.reduce { |final_swift_version, versions| final_swift_version & versions }
-        unless swift_version&.first
-          abort("Could not find a common compatible Swift version across the pods to be merged for group #{merged_framework_name}: #{swift_versions}".red)
+        if !forced_swift_language_version.empty?
+          swift_version = [forced_swift_language_version]
+        else
+          swift_version = swift_versions.each_value.reduce { |final_swift_version, versions| final_swift_version & versions }
+          unless swift_version&.first
+            Pod::UI.puts "Could not find a common compatible Swift version across the pods to be merged group #{merged_framework_name}: #{swift_versions}".red
+            abort("or specify a swift version in this group using the swift_version! flag, example: swift_version! '5.0'".red)
+          end
         end
-        Pod::UI.puts "\tUsing Swift Version #{swift_version.first} for the group: #{merged_framework_name}".magenta
+        Pod::UI.puts "\tUsing Swift Version #{swift_version.first} for the group: #{merged_framework_name}".yellow
       end
 
       # Create the local podspec
@@ -386,9 +400,26 @@ module CocoapodsPodMerge
       return [object] if object.class == String || object.class == Hash
     end
 
-    def create_cache_podfile(podfile_info, pods)
+    def create_cache_podfile(podfile_info, pods, swift_language_version)
       FileUtils.touch("#{CacheDirectory}/Podfile")
       file = File.new("#{CacheDirectory}/Podfile", 'w')
+
+      uses_swift = !swift_language_version.empty?
+
+      # Create a temporary Xcode project for pods missing Swift_Version in the Podspec
+      if uses_swift
+        project = Xcodeproj::Project.new("#{CacheDirectory}/Dummy.xcodeproj")
+        target = project.new_target(:application, 'Dummy', :ios, '13.1', nil, :swift)
+        swift_file = project.main_group.new_file('./dummy.swift')
+        target.add_file_references([swift_file])
+        project.targets.each do |target|
+          target.build_configurations.each do |config|
+            config.build_settings['SWIFT_VERSION'] ||= swift_language_version
+          end
+        end
+        project.save
+      end
+
       file.puts("require 'json'")
       podfile_info.sources.each do |source|
         file.puts source
@@ -396,7 +427,13 @@ module CocoapodsPodMerge
       podfile_info.platforms.each do |platform|
         file.puts platform
       end
-      file.puts("install! 'cocoapods', :integrate_targets => false, :lock_pod_sources => false")
+
+      if uses_swift
+        file.puts("install! 'cocoapods', :lock_pod_sources => false")
+      else
+        file.puts("install! 'cocoapods', :integrate_targets => false, :lock_pod_sources => false")
+      end
+
       file.puts("target 'Dummy' do")
       pods.each do |line|
         file.puts line.to_s

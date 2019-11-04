@@ -5,7 +5,7 @@ plugin 'cocoapods-pod-merge'
 target 'PodMergeExample' do
   use_frameworks!
 
-  pod 'Moya' # Unmerged pods are unaffected
+  pod 'SnapKit' # Unmerged pods are unaffected
 
   # Merged Pods:
   pod 'Networking', :path => 'MergedPods/Networking'
