@@ -450,7 +450,7 @@ module CocoapodsPodMerge
       module_map = File.new("#{InstallationDirectory}/#{merged_framework_name}/Sources/module.modulemap", 'w')
       module_map.puts("framework module #{merged_framework_name} {")
       public_headers.each do |pod, headers|
-        module_map.puts("\n\texplicit module #{pod} {")
+        module_map.puts("\n\texplicit module #{pod.delete('+').delete('_')} {")
         headers.each do |header|
           module_map.puts("\t\theader \"#{header}\"")
         end
