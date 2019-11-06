@@ -52,6 +52,8 @@ The above MergeFile:
 
 **Here's a [few important tips](https://github.com/grab/cocoapods-pod-merge#tips) to decide what pods to merge.**
 
+> Important: The MergeFile is pretty strict about it's syntax, so please avoid adding comments or random text to it. To make your life easier, tell your text editor to treat it like a Ruby file.
+
 #### 2. Update your Podfile
 
 Now, update your Podfile to use the plugin, as well as the merged pods:
@@ -181,6 +183,21 @@ end
 ```
 
 This enables an experimental feature where the plugin tries to fix dependency imports. For example, If pod `ABC` has code like  `import <ABCDependsOnThis/File.h>`, the plugin will automatically convert this import into `#import "File.h"`, since after the merge, the both the pods will be in the same framework.
+
+#### swift_version!
+
+If you have a group of Swift pods, the plugin automatically finds out the common compatible Swift version across those pods, and sets that as the Swift version for the merged Pod. If you'd like to manually set the Swift version of a group, you can use the `swift_version` flag like:
+
+```ruby
+group 'SwiftPodsGroup'
+	swift_version! '5.0'
+	pod 'SwiftPodA'
+	pod 'SwiftPodB'
+	pod 'SwiftPodC'
+end
+```
+
+This is especially handy if some of the pods in your group do not have a Swift Version defined in their `podspec`.
 
 ## Version Control (like git)
 
