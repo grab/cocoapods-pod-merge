@@ -247,6 +247,7 @@ module CocoapodsPodMerge
           Dir.glob('**/*.{h,m,mm,swift}').each do |source_file|
             contents = File.read(source_file)
             if has_dependencies
+              # Fix imports of style import xx
               pods_to_merge.each do |pod|
                 modular_imports = contents.scan(%r{<#{pod}/(.+)>})
                 next unless modular_imports&.last
@@ -256,6 +257,15 @@ module CocoapodsPodMerge
                   match.gsub(%r{<#{pod}/(.+)>}, "\"#{Regexp.last_match(1)}\"")
                 end
                 File.open(source_file, 'w') { |file| file.puts contents_with_imports_fixed }
+              end
+
+              # Fix imports of style import xx
+              pods_to_merge.each do |pod|
+                modular_imports = contents.scan("import #{pod}")
+                next unless modular_imports&.last
+
+                Pod::UI.puts "\t\tExperimental: ".yellow + "Found a module import in #{source_file}, fixing this by removing it".magenta
+                File.open(source_file, 'w') { |file| file.puts contents.gsub("import #{pod}", "") }
               end
             else
               modular_imports = contents.scan(%r{<#{pod}/(.+)>})
