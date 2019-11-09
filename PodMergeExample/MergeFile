@@ -11,6 +11,15 @@ group 'UI'
 end
 
 group 'MergedSwiftPods' do
-  pod 'Alamofire'
+  pod 'SnapKit'
   pod 'SwiftyJSON'
+end
+
+group 'AlamofireGroup' do
+	swift_version! '5.0'
+	has_dependencies!
+
+	pod 'Alamofire'
+	pod 'AlamofireImage'
+	pod 'AlamofireActivityLogger'
 end

@@ -19,9 +19,10 @@ import Networking.SDWebImage
 
 // Merged Swift Pods cannot be import individually, only all or none.
 import MergedSwiftPods
+import AlamofireGroup
 
 // Unmerged pods are unaffected
-import SnapKit
+import Nuke
 
 // Cannot import individual pods anymore, uncomment to check:
 // import MBProgressHUD
@@ -40,6 +41,8 @@ class ViewController: UIViewController {
 
   let error: AFError = .invalidURL(url: "")
   let json: SwiftyJSONError = .elementTooDeep
+
+  let request = ImageRequest(url: URL(string: "https://github.com/grab/cocoapods-pod-merge")!)
 
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -5,10 +5,11 @@ plugin 'cocoapods-pod-merge'
 target 'PodMergeExample' do
   use_frameworks!
 
-  pod 'SnapKit' # Unmerged pods are unaffected
+  pod 'Nuke' # Unmerged pods are unaffected
 
   # Merged Pods:
   pod 'Networking', :path => 'MergedPods/Networking'
   pod 'UI', :path => 'MergedPods/UI'
+  pod 'AlamofireGroup', :path => 'MergedPods/AlamofireGroup'
   pod 'MergedSwiftPods', :path => 'MergedPods/MergedSwiftPods'
 end
