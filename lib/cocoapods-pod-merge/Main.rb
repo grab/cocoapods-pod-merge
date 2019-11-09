@@ -72,6 +72,14 @@ module CocoapodsPodMerge
       add_to_gitignore
     end
 
+    def add_mergefile_to_project(installer_context) 
+      pods_project = Xcodeproj::Project.open(installer_context.pods_project.path)
+      mergefile = pods_project.new_file('../MergeFile')
+      mergefile.explicit_file_type = 'text.script.ruby'
+      mergefile.include_in_index = '1'
+      pods_project.save
+    end
+
     def add_to_gitignore
       gitignore_file = '.gitignore'
 
@@ -265,7 +273,7 @@ module CocoapodsPodMerge
                 next unless modular_imports&.last
 
                 Pod::UI.puts "\t\tExperimental: ".yellow + "Found a module import in #{source_file}, fixing this by removing it".magenta
-                File.open(source_file, 'w') { |file| file.puts contents.gsub("import #{pod}", "") }
+                File.open(source_file, 'w') { |file| file.puts contents.gsub("import #{pod}", '') }
               end
             else
               modular_imports = contents.scan(%r{<#{pod}/(.+)>})
