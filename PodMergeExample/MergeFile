@@ -12,7 +12,9 @@ end
 
 group 'MergedSwiftPods' do
   pod 'SnapKit', '5.0.1'
+  pod 'Kingfisher', '~> 5.0'
   pod 'SwiftyJSON', '5.0.0'
+  
 end
 
 group 'AlamofireGroup' do

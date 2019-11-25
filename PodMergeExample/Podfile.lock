@@ -13,7 +13,7 @@ DEPENDENCIES:
   - UI (from `MergedPods/UI`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  trunk:
     - Nuke
 
 EXTERNAL SOURCES:
@@ -27,11 +27,11 @@ EXTERNAL SOURCES:
     :path: MergedPods/UI
 
 SPEC CHECKSUMS:
-  AlamofireGroup: 113f3ab321b31b75a748378909f3f96305b771a2
-  MergedSwiftPods: 86f52fdd7411987cd39e6c80e709ef0de0126fd3
-  Networking: 844633d13d2328a829083b24ffaee99aea51c1de
+  AlamofireGroup: c7af15f9d1f646dd2d5793dd470efc1942bfc20b
+  MergedSwiftPods: 90c36ec9c0177f0cd19776a428e6e22d6df267a4
+  Networking: 63b67ccfde89eaf06f6e01218d294ec2c8b6c628
   Nuke: 85fb80f8df0cb26c28d2f4e0cb7fb93bcd6548d3
-  UI: 2aa82721ee430cd2f0ab314904bbe1a281fa2ff9
+  UI: 82623fb675f17ffe5a5cd00602619ee4f2040cd7
 
 PODFILE CHECKSUM: 88ffe01efb39e0f819cf88bf11786182ab6f4441
 
