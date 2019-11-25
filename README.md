@@ -245,10 +245,9 @@ This plugin is not a magic bullet that'll merge all your cocoapods into a single
 * **Refrain from merging complex or specialized pods** (like pods written in C/C++). Such pods can have special build settings and compiler flags that can break the other pods that are merged with them.
 * **Make sure** you add the required [flags](https://github.com/grab/cocoapods-pod-merge#special-flags) to relevant groups in your `MergeFile`.
 
-
 ## Troubleshooting
 
-If the above guidelines still do not solve your problem, please [report it](https://github.com/grab/cocoapods-pod-merge/issues)! Merging Pods is a complex process, and the plugin does not cover all possible use cases or podspec formats. Any feedback or feature suggesions are also encouraged. Bug reports and pull requests are welcome. 
+If the above guidelines still do not solve your problem, please [report it](https://github.com/grab/cocoapods-pod-merge/issues)! Merging Pods is a complex process, and the plugin does not cover all possible use cases or podspec formats. Any feedback or feature suggestions are also encouraged. Bug reports and pull requests are welcome.
 
 ## License
 
