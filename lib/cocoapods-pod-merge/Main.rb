@@ -445,8 +445,11 @@ module CocoapodsPodMerge
       podfile_info.sources.each do |source|
         file.puts source
       end
-      podfile_info.platforms.each do |platform|
-        file.puts platform
+
+      if platforms_in_target.length == 0
+        podfile_info.platforms.each do |platform|
+          file.puts platform
+        end
       end
 
       if uses_swift
