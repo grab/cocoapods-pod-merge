@@ -199,6 +199,22 @@ end
 
 This is especially handy if some of the pods in your group do not have a Swift Version defined in their `podspec`.
 
+#### platform
+
+If you have multiple platforms in your base Podfile, you can specify the `platform` for each group in your MergeFile
+
+```ruby
+group 'SwiftPodsGroup'
+	platform :ios, '11.0'
+
+	pod 'SwiftPodA'
+	pod 'SwiftPodB'
+	pod 'SwiftPodC'
+end
+```
+
+This is helpful when you have a Podfile with Pods for iOS, WatchOS, etc...
+
 ## Version Control (like git)
 
 You should definitely commit the `MergeFile`  into your repository, since this is just like your Podfile, and is required for the plugin to work. 
