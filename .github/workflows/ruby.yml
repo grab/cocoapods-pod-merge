@@ -41,4 +41,7 @@ jobs:
     - name: Test Podspec for UI Group
       working-directory: ./PodMergeExample/MergedPods/UI
       run: cmp --silent UI.podspec ../../../.github/test_podspecs/UI.podspec
+    - name: Build Project
+      working-directory: ./PodMergeExample
+      run: xcodebuild -workspace PodMergeExample.xcworkspace -scheme PodMergeExample
       
