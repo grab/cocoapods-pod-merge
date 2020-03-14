@@ -29,3 +29,16 @@ jobs:
     - name: Test MergeFile.lock
       working-directory: ./PodMergeExample/MergedPods
       run: if grep -q "ac10c17747021b715f48db7ef21767fb" MergeFile.lock; then echo "Success"; else exit 1; fi
+    - name: Test Podspec for AlamofireGroup Group
+      working-directory: ./PodMergeExample/MergedPods/AlamofireGroup
+      run: cmp --silent AlamofireGroup.podspec ../../../.github/test_podspecs/AlamofireGroup.podspec
+    - name: Test Podspec for MergedSwiftPods Group
+      working-directory: ./PodMergeExample/MergedPods/MergedSwiftPods
+      run: cmp --silent MergedSwiftPods.podspec ../../../.github/test_podspecs/MergedSwiftPods.podspec
+    - name: Test Podspec for Networking Group
+      working-directory: ./PodMergeExample/MergedPods/Networking
+      run: cmp --silent Networking.podspec ../../../.github/test_podspecs/Networking.podspec
+    - name: Test Podspec for UI Group
+      working-directory: ./PodMergeExample/MergedPods/UI
+      run: cmp --silent UI.podspec ../../../.github/test_podspecs/UI.podspec
+      
