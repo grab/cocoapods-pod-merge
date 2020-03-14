@@ -159,6 +159,8 @@ module CocoapodsPodMerge
               else
                 merge_groups[group_name]['flags'][line.strip.delete('!')] = true
               end
+            elsif line.strip.include?('platform')
+              merge_groups[group_name]['platforms'].append(line)
             else
               merge_groups[group_name]['lines'].append(line)
               line = line.split(',').first
@@ -174,7 +176,7 @@ module CocoapodsPodMerge
                 abort("Duplicate Group Name: #{group_name}. Please make sure all groups have different names!".red)
               end
 
-              merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {}, 'swift_version' => '' }
+              merge_groups[group_name] = { 'titles' => [], 'lines' => [], 'flags' => {}, 'swift_version' => '', 'platforms' => [] }
               parsing_a_group = true
             end
           end
@@ -189,6 +191,7 @@ module CocoapodsPodMerge
       pods_to_merge = group_contents['titles']
       flags = group_contents['flags']
       forced_swift_language_version = group_contents['swift_version']
+      platforms_in_target = group_contents['platforms']
       public_headers_by_pod = {}
       frameworks = []
       prefix_header_contents = []
@@ -217,7 +220,7 @@ module CocoapodsPodMerge
       Pod::UI.puts 'Downloading Pods in the group'.cyan
       FileUtils.mkdir CacheDirectory unless File.directory?(CacheDirectory)
 
-      create_cache_podfile(podfile_info, group_contents['lines'], forced_swift_language_version)
+      create_cache_podfile(podfile_info, group_contents['lines'], forced_swift_language_version, platforms_in_target)
 
       Dir.chdir(CacheDirectory) do
         system('pod install') || raise('Failed to download pods to merge')
@@ -418,7 +421,7 @@ module CocoapodsPodMerge
       return [object] if object.class == String || object.class == Hash
     end
 
-    def create_cache_podfile(podfile_info, pods, swift_language_version)
+    def create_cache_podfile(podfile_info, pods, swift_language_version, platforms_in_target)
       FileUtils.touch("#{CacheDirectory}/Podfile")
       file = File.new("#{CacheDirectory}/Podfile", 'w')
 
@@ -442,8 +445,11 @@ module CocoapodsPodMerge
       podfile_info.sources.each do |source|
         file.puts source
       end
-      podfile_info.platforms.each do |platform|
-        file.puts platform
+
+      if platforms_in_target.length == 0
+        podfile_info.platforms.each do |platform|
+          file.puts platform
+        end
       end
 
       if uses_swift
@@ -453,6 +459,9 @@ module CocoapodsPodMerge
       end
 
       file.puts("target 'Dummy' do")
+      platforms_in_target.each do |platform|
+        file.puts platform.to_s
+      end
       pods.each do |line|
         file.puts line.to_s
       end
