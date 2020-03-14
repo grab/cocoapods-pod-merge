@@ -43,5 +43,5 @@ jobs:
       run: cmp --silent UI.podspec ../../../.github/test_podspecs/UI.podspec
     - name: Build Project
       working-directory: ./PodMergeExample
-      run: xcodebuild -workspace PodMergeExample.xcworkspace -scheme PodMergeExample -allowProvisioningUpdates
+      run: xcodebuild -workspace PodMergeExample.xcworkspace -scheme PodMergeExample -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11 Pro,OS=13.1"
       
