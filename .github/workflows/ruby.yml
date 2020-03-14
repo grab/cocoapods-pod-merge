@@ -1,0 +1,31 @@
+name: Pod-Merge Tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Install Bundler
+      run: gem install bundler
+    - name: Install Bundle
+      working-directory: ./PodMergeExample
+      run: bundle install --jobs 4 --retry 3
+    - name: Cleanup
+      working-directory: ./PodMergeExample
+      run: |
+        rm -rf Pods
+        rm -rf MergedPods
+    - name: Execute Pod Merge
+      working-directory: ./PodMergeExample
+      run: bundle exec pod install
+    - name: Test MergeFile.lock
+      working-directory: ./PodMergeExample/MergedPods
+      run: if grep -q "ac10c17747021b715f48db7ef21767fb" MergeFile.lock; then echo "Success"; else exit 1; fi
