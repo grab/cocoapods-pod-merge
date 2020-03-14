@@ -17,6 +17,7 @@ end
 
 group 'AlamofireGroup' do
 	swift_version! '5.0'
+	platform :ios, '11.0'
 	has_dependencies!
 
 	pod 'Alamofire', '4.9.1'
