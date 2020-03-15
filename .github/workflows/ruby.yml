@@ -28,7 +28,7 @@ jobs:
       run: bundle exec pod install
     - name: Test MergeFile.lock
       working-directory: ./PodMergeExample/MergedPods
-      run: if grep -q "ac10c17747021b715f48db7ef21767fb" MergeFile.lock; then echo "Success"; else exit 1; fi
+      run: if grep -q "59df3baa7e2ae43b33c753691314c202" MergeFile.lock; then echo "Success"; else exit 1; fi
     - name: Test Podspec for AlamofireGroup Group
       working-directory: ./PodMergeExample/MergedPods/AlamofireGroup
       run: cmp --silent AlamofireGroup.podspec ../../../.github/test_podspecs/AlamofireGroup.podspec
