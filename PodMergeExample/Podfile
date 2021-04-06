@@ -1,6 +1,7 @@
 platform :ios, '11.0'
 
 plugin 'cocoapods-pod-merge'
+install! "cocoapods", :warn_for_unused_master_specs_repo => false
 
 target 'PodMergeExample' do
   use_frameworks!
