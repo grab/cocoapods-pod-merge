@@ -3,6 +3,7 @@ PODS:
   - MergedSwiftPods (1.0.0)
   - Networking (1.0.0)
   - Nuke (8.3.1)
+  - Subspecs (1.0.0)
   - UI (1.0.0)
 
 DEPENDENCIES:
@@ -10,6 +11,7 @@ DEPENDENCIES:
   - MergedSwiftPods (from `MergedPods/MergedSwiftPods`)
   - Networking (from `MergedPods/Networking`)
   - Nuke
+  - Subspecs (from `MergedPods/Subspecs`)
   - UI (from `MergedPods/UI`)
 
 SPEC REPOS:
@@ -23,6 +25,8 @@ EXTERNAL SOURCES:
     :path: MergedPods/MergedSwiftPods
   Networking:
     :path: MergedPods/Networking
+  Subspecs:
+    :path: MergedPods/Subspecs
   UI:
     :path: MergedPods/UI
 
@@ -31,8 +35,9 @@ SPEC CHECKSUMS:
   MergedSwiftPods: 86f52fdd7411987cd39e6c80e709ef0de0126fd3
   Networking: 844633d13d2328a829083b24ffaee99aea51c1de
   Nuke: 85fb80f8df0cb26c28d2f4e0cb7fb93bcd6548d3
+  Subspecs: 634e12dffc5b250b231410781ffa7b7c2c665b7a
   UI: 2aa82721ee430cd2f0ab314904bbe1a281fa2ff9
 
-PODFILE CHECKSUM: 689012d73798a7fea312905128d4dadb72554cf1
+PODFILE CHECKSUM: cf932697df9d1e546ce24dd892661e3d0e6d57ec
 
 COCOAPODS: 1.10.1

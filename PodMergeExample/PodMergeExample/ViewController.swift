@@ -16,6 +16,7 @@ import UI.TTTAttributedLabel
 
 import Networking.AFNetworking
 import Networking.SDWebImage
+import Subspecs.AppAuth
 
 // Merged Swift Pods cannot be import individually, only all or none.
 import MergedSwiftPods
@@ -50,6 +51,11 @@ class ViewController: UIViewController {
     // SnapKit Usage
     let box = UIView()
     box.snp.makeConstraints { _ in }
+    
+    let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
+    let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
+    let configuration = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
+                                                tokenEndpoint: tokenEndpoint)
   }
 }
 

@@ -26,3 +26,8 @@ group 'AlamofireGroup' do
 	pod 'AlamofireImage', '3.6.0'
 	pod 'AlamofireActivityLogger', '2.5.0'
 end
+
+group 'Subspecs'
+    pod 'AppAuth/Core'
+	pod 'AppAuth/ExternalUserAgent'
+end
