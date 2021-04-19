@@ -144,8 +144,8 @@ module CocoapodsPodMerge
         group_name = ''
         f.each_line do |line|
           next if line.strip.empty?
+          next if line.strip.start_with?('#')
 
-          line = line.gsub(/\#.+/, '') if line.include?('#') # Remove any comments
           if parsing_a_group
             if line.strip == 'end'
               parsing_a_group = false
