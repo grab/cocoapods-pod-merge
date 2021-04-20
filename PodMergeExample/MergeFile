@@ -29,5 +29,5 @@ end
 
 group 'Subspecs'
     pod 'AppAuth/Core'
-	pod 'AppAuth/ExternalUserAgent'
+    pod 'AppAuth/ExternalUserAgent'
 end
