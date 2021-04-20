@@ -32,7 +32,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AlamofireGroup: 113f3ab321b31b75a748378909f3f96305b771a2
-  MergedSwiftPods: 86f52fdd7411987cd39e6c80e709ef0de0126fd3
+  MergedSwiftPods: 1d3174c8375d5c332021c20accaedaf11b5e58d0
   Networking: 844633d13d2328a829083b24ffaee99aea51c1de
   Nuke: 85fb80f8df0cb26c28d2f4e0cb7fb93bcd6548d3
   Subspecs: 634e12dffc5b250b231410781ffa7b7c2c665b7a
