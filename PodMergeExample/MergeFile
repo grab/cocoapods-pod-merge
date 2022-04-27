@@ -13,8 +13,11 @@ end
 
 group 'MergedSwiftPods' do
   # Swift Pods
+  swift_version! '5.0'
+  
   pod 'SnapKit', '5.0.1'
   pod 'SwiftyJSON', '5.0.0'
+  pod 'youtube-ios-player-helper'
 end
 
 group 'AlamofireGroup' do
@@ -25,4 +28,9 @@ group 'AlamofireGroup' do
 	pod 'Alamofire', '4.9.1'
 	pod 'AlamofireImage', '3.6.0'
 	pod 'AlamofireActivityLogger', '2.5.0'
+end
+
+group 'Subspecs'
+    pod 'AppAuth/Core'
+    pod 'AppAuth/ExternalUserAgent'
 end

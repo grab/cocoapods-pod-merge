@@ -188,7 +188,8 @@ module CocoapodsPodMerge
     def merge(merged_framework_name, group_contents, podfile_info)
       Pod::UI.puts "Preparing to Merge: #{merged_framework_name}"
 
-      pods_to_merge = group_contents['titles']
+      # Replace the Subspecs notation (e.g AppAuth/Core) for `AppAuth` only as the folder AppAuth/Core would not exist
+      pods_to_merge = group_contents['titles'].map { |pod_name| pod_name.sub /(\/[a-zA-Z]+)/,''}.uniq
       flags = group_contents['flags']
       forced_swift_language_version = group_contents['swift_version']
       platforms_in_target = group_contents['platforms']
@@ -231,7 +232,7 @@ module CocoapodsPodMerge
       FileUtils.mkdir("#{InstallationDirectory}/#{merged_framework_name}/Sources")
 
       Pod::UI.puts 'Merging Pods'.cyan
-      pods_to_merge.each do |pod|
+      pods_to_merge.each_with_index do |pod, index|
         # Capture all resources to specify in the final podspec
         Pod::UI.puts "\t#{pod.cyan}"
 
@@ -293,8 +294,13 @@ module CocoapodsPodMerge
 
         # Read each pod's podspec, and collect configuration for the final merged podspec
         Pod::UI.puts "\t\tExtracting Detailed Podspecs".magenta
+        
+        # The originals pods name with the subspecs from the MergeFile. The subspecs are renamed to
+        # PodspecName_Subspec instead of PodspecName/Subspec
+        pods_to_merge_with_subspecs = group_contents['titles'].map { |pod_name| pod_name.sub '/','_'}
+
         Dir.chdir("#{CacheDirectory}/Podspecs") do
-          info = extract_info_from_podspec(pod, mixed_language_group)
+          info = extract_info_from_podspec(pods_to_merge_with_subspecs[index], mixed_language_group)
           frameworks += info.frameworks
           prefix_header_contents += info.prefix_header_contents
           private_header_files += info.private_header_files

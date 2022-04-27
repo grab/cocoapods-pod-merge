@@ -13,4 +13,5 @@ target 'PodMergeExample' do
   pod 'UI', :path => 'MergedPods/UI'
   pod 'AlamofireGroup', :path => 'MergedPods/AlamofireGroup'
   pod 'MergedSwiftPods', :path => 'MergedPods/MergedSwiftPods'
+  pod 'Subspecs', :path => 'MergedPods/Subspecs'
 end
