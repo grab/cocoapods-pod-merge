@@ -44,12 +44,17 @@ class ViewController: UIViewController {
 
   let request = ImageRequest(url: URL(string: "https://github.com/grab/cocoapods-pod-merge")!)
 
+  let url = URL(string: "https://example.com/image.png")
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     // SnapKit Usage
     let box = UIView()
     box.snp.makeConstraints { _ in }
+
+    let imageView = UIImageView(frame: .zero)
+    imageView.kf.setImage(with: url)
   }
 }
 

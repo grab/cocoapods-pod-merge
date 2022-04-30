@@ -337,7 +337,7 @@ module CocoapodsPodMerge
 
       # Create the local podspec
       Pod::UI.puts "\tCreating Podspec for the merged framework".magenta
-      create_podspec(merged_framework_name, pods_to_merge, PodspecInfo.new(frameworks.uniq, prefix_header_contents.uniq, private_header_files.uniq, resources.uniq, script_phases.uniq, compiler_flags.uniq, libraries.uniq, prepare_command.uniq, resource_bundles, vendored_libraries.uniq, swift_version), mixed_language_group)
+      create_podspec(merged_framework_name, pods_to_merge, PodspecInfo.new(frameworks.uniq, prefix_header_contents.uniq, private_header_files.uniq, resources.uniq, script_phases.uniq, compiler_flags.uniq, libraries.uniq, prepare_command.uniq, resource_bundles, vendored_libraries.uniq, swift_version), mixed_language_group, podfile_info)
 
       Pod::UI.puts 'Cleaning up cache'.cyan
       FileUtils.rm_rf(CacheDirectory)
@@ -487,7 +487,7 @@ module CocoapodsPodMerge
       module_map.close
     end
 
-    def create_podspec(merged_framework_name, pods_to_merge, podspec_info, mixed_language_group)
+    def create_podspec(merged_framework_name, pods_to_merge, podspec_info, mixed_language_group, podfile_info)
       frameworks = podspec_info.frameworks
       prefix_header_contents = podspec_info.prefix_header_contents
       private_header_files = podspec_info.private_header_files
@@ -499,6 +499,7 @@ module CocoapodsPodMerge
       resource_bundles = podspec_info.resource_bundles
       vendored_libraries = podspec_info.vendored_libraries
       swift_versions = podspec_info.swift_versions
+      ios_deployment_target = podfile_info.platforms.find { |platform| platform.include? "ios"}.split(',')[1]
 
       mergedPodspec = %(
         Pod::Spec.new do |s|
@@ -510,7 +511,7 @@ module CocoapodsPodMerge
           s.license          = { :type => 'MIT', :text => 'Merged Pods by cocoapods-pod-merge plugin  ' }
           s.author           = { 'GrabTaxi Pte Ltd' => 'dummy@grabtaxi.com' }
           s.source           = { :git => 'https://github.com/grab/cocoapods-pod-merge', :tag => '1.0.0' }
-          s.ios.deployment_target = '8.0'
+          s.ios.deployment_target = #{ios_deployment_target}
           s.source_files = 'Sources/**/*.{h,m,mm,swift}'
         )
 
